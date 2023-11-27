@@ -1,11 +1,15 @@
 <script>
     export let data;
-
+    export let form;
     // console.log(data.data);
 </script>
 
 <main>
-{#each data.data as event}
+{#if form?.token}
+    <p>{form?.token}</p>
+{/if}
+<p>{form?.token}</p>
+<!-- {#each data.data as event}
 <a href="/events/{event['id']}">
     <article style="border: 10px solid {event['color']}; border-radius:0.2rem; background-image: url('src/lib/images/{event['bgImage']}'); background-size: cover; background-repeat: no-repeat; width: 35rem; height: 25rem;">
         <img class="logo" src="/src/lib/images/{event['logo']}" alt="">
@@ -16,12 +20,10 @@
                 <p>{event['contactPhone']}</p>
                 <p>{event['contactEmail']}</p>
             </div>
-            <!-- <input type="date" name="" id="" value={event['startDate']} style="background-color: {event['color']};" disabled>
-            <input type="date" name="" id="" value="{event['endDate']}" readonly style="background-color: {event['color']};" disabled> -->
         </div>
     </article>
 </a>
-{/each}
+{/each} -->
 </main>
 
 <style>
@@ -34,6 +36,7 @@ p{
     margin-left: 0.3rem;
 }
 main{
+    height: 100vh;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;

@@ -1,9 +1,36 @@
 import { mysqlConnection } from "$lib/db/mysql";
 import { writeFile } from "fs/promises";
 import { extname } from "path";
+import { redirect } from '@sveltejs/kit';
+import jwt from 'jsonwebtoken';
+
+const secret = import.meta.env.VITE_SECRET;
+
+export async function load({cookies}) {
+
+    if(!cookies.get('Authorization')){
+        throw redirect(302, '/login');
+    }
+
+    const token = cookies.get('Authorization').split(" ")[1];
+    if(!jwt.verify(token, secret)){
+        throw redirect(302, '/login');
+    }
+
+}
 
 export const actions = {
-	default: async ({request}) => {
+	default: async ({request, cookies}) => {
+
+        if(!cookies.get('Authorization')){
+            throw redirect(302, '/login');
+        }
+    
+        const token = cookies.get('Authorization').split(" ")[1];
+        if(!jwt.verify(token, secret)){
+            throw redirect(302, '/login');
+        }
+        
 		// TODO log the user in
         const formData = await request.formData();
         const body = Object.fromEntries(formData);
