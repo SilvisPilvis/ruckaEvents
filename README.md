@@ -25,8 +25,6 @@ npm run dev
 npm run dev -- --open
 ```
 
-## To Get database import events.sql file
-
 ## Building
 
 To create a production version of your app:

@@ -1,37 +1,30 @@
 <script>
-import { mysqlConnection } from "$lib/db/mysql";
-connection = mysqlConnection();
-connection.execute(
-  'SELECT * FROM events WHERE `name` = ? AND `age` > ?',
-  ['Rick C-137', 53],
-  function(err, results, fields) {
-    console.log(results); // results contains rows returned by server
-    console.log(fields); // fields contains extra meta data about results, if available
-
-    // If you execute same statement again, it will be picked from a LRU cache
-    // which will save query preparation time and give better performance
-  }
-);
-
-let password, username;
-async function login() {
-    // console.log(username, password, apikey);
-    try {
-        const response = await axios.post('/api.php');
-        console.log(response);
-    } catch (error) {
-        console.error(error);
-    }
-}
+export let form;
 </script>
 
 <main>
-    <input type="text" placeholder="lietotajvards" bind:value={username}>
-    <input type="password" name="" id="" placeholder="parole" bind:value={password}>
-    <input type="submit" value="Ielogoties" on:click={login}>
+    {#if form?.success}
+        <p>Token</p>
+        <p>{form?.token}</p>
+        <!-- <p>{localStorage.getItem("auth")}</p> -->
+    {/if}
+    {#if form?.error}
+        <div class="notice error">
+        {form?.error}
+        </div>
+    {/if}
+    <form action="" method="post">
+        <input type="text" placeholder="lietotajvards" name="username">
+        <input type="password" name="password" id="" placeholder="parole">
+        <input type="submit" value="Ielogoties">
+    </form>
 </main>
 
 <style>
+    form{
+        display: flex;
+        flex-direction: column;
+    }
     main{
         height: 100vh;
         margin: 0;
