@@ -7,8 +7,6 @@ import shajs from 'sha.js';
 const secret = import.meta.env.VITE_SECRET;
 
 export async function load({cookies}) {
-    // console.log(cookies);
-    // const user = cookies.get('Authorization');
     // cookies.delete('Authorization');
     if(!cookies.get('Authorization')){
         return {
