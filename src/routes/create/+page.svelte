@@ -48,11 +48,20 @@ function test(){
             Pasākuma apraksts:
             <textarea name="eventDescription" id="" cols="30" rows="10" bind:value={description}></textarea>
         </label>
-        <!-- <label>
+        <label>
             Sākuma datums:
             <input type="date" name="startDate" id="" bind:value={startDate}>
         </label>
         <label>
+            Sākuma laiks:
+            <input type="time" name="startTime" id="">
+            <!-- <input type="datetime-local" name="" id=""> -->
+        </label>
+        <label>
+            Beigu laiks:
+            <input type="time" name="endTime" id="">
+        </label>
+        <!-- <label>
             Beigu datums:
             <input type="date" name="endDate" id="" bind:value={endDate}>
         </label> -->
