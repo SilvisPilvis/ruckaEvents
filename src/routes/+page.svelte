@@ -1,6 +1,7 @@
 <script>
     import * as jq from "jquery";
     export let data;
+    //uztaisit array un arraya saglabat event datumus
     function getDaysInMonth(year, month) {
         return new Date(year, month, 0).getDate();
     }
@@ -8,7 +9,6 @@
     const currentYear = date.getFullYear();
     const currentMonth = date.getMonth() + 1;
     const daysInCurrentMonth = getDaysInMonth(currentYear,currentMonth-1);
-    // console.log(daysInCurrentMonth);
     function showPopup(id){
         if(jq(`.popup${id}`).attr('id')){
             console.log('Has id, showing');
@@ -18,35 +18,56 @@
             jq(`.popup${id}`).attr('id', 'hidden');
         }
     }
+    //nonemt otru foreach loop
+    let eventDates = [];
+    data.data.forEach(element => {
+        // console.log(new Date(element.startDate).getDate());
+        eventDates.push(new Date(element.startDate).getDate());
+    });
+    // console.log(eventDates);
+    // let test = jq(`.tile`).length;
+    // console.log(test);
     //onclick show box position absolute
     // export let form;
-    // console.log(data.data);
+    // console.log(jq('.tile'));
+    console.log(data.data);
 </script>
 
 <main>
 <div class="calendar">
     {#each Array(daysInCurrentMonth) as _, i}
     <!-- <p>{data.data}</p> -->
-        {#each data.data as event}
-            {#if new Date(event['startDate']).getDate() == i+1 }
+
+            <!-- {#if new Date(event['startDate']).getDate() == i+1} -->
+            {#if eventDates.includes(i+1)}
                 <!-- <div class="tile" id="{i+1}" style="background-color: {event['color']};">{i + 1} <a href="/events/{event['id']}">{event['eventName']}</a></div> -->
-                <div class="tile" id="{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>{i + 1} <p>{event['eventName']}</p></div>
-                <div id="hidden" class="popup{i+1} box">
-                    <button on:click={() => showPopup(i+1)}>X</button>
-                    <div class="cen col">
-                        <p class="box-data">{event['eventName']}</p>
-                        <p class="box-data">{event['startDate']}</p>
-                        <p class="box-data">{event['startTime']}</p>
-                        <p class="box-data">{event['eventDescription']}</p>
-                        <p>Kontakti:</p>
-                        <p class="box-data">{event['contactPhone']}</p>
-                        <p class="box-data">{event['contactEmail']}</p>
+                {#each data.data as event, index}
+                <!-- {index} -->
+
+                {#if new Date(event['startDate']).getDate() == i+1 }
+                    <!-- {#if }
+                        
+                    {/if} -->
+                    <div class="tile" id="box-{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>{i + 1} <p>{event['eventName']}</p>
                     </div>
-                </div>
+
+                    <div id="hidden" class="popup{i+1} box">
+                        <button on:click={() => showPopup(i+1)}>X</button>
+                        <div class="cen col">
+                            <p class="box-data">{event['eventName']}</p>
+                            <p class="box-data">{new Date(event['startDate']).getDate()}-{new Date(event['startDate']).getMonth()}-{new Date(event['startDate']).getFullYear()}</p>
+                            <p class="box-data">{event['startTime']}</p>
+                            <p class="box-data">{event['eventDescription']}</p>
+                            <p>Kontakti:</p>
+                            <p class="box-data">{event['contactPhone']}</p>
+                            <p class="box-data">{event['contactEmail']}</p>
+                        </div>
+                    </div>
+                {/if}
+                {/each}
             {:else}
-                <div class="tile" id="{i+1}">{i + 1}</div>
+                <div class="tile" id="box-{i+1}">{i + 1}</div>
             {/if}
-        {/each}
     {/each}
 </div>
 
@@ -68,9 +89,6 @@
 </main>
 
 <style>
-/* .grid{
-    display: grid;
-} */
 :root{
     --calendarWidth: 60%;
     --calendarHeight: 80%;
