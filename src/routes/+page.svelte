@@ -1,7 +1,9 @@
 <script>
+    // import JSDOM from "JSDOM";
+    // const { window } = new JSDOM( "" );
     import * as jq from "jquery";
     export let data;
-    //uztaisit array un arraya saglabat event datumus
+    
     function getDaysInMonth(year, month) {
         return new Date(year, month, 0).getDate();
     }
@@ -19,73 +21,93 @@
         }
     }
     //nonemt otru foreach loop
+
+    //removes duplicate dates
+    let filteredDates = [];
+    for(let i = 0 ; i<data.data.length; i++ ){
+        if(i <= data.data.length-2){
+            if(new Date(data.data[i]['startDate']).getDate() == new Date(data.data[i+1]['startDate']).getDate()){
+                console.log(`Duplicate @ ${i+1}`);
+                filteredDates.push(data.data[i+1]);
+                data.data.splice(i+1, 1);
+            }
+        }
+    }
+    // console.log(filteredDates);
+
     let eventDates = [];
     data.data.forEach(element => {
         // console.log(new Date(element.startDate).getDate());
         eventDates.push(new Date(element.startDate).getDate());
     });
+    // console.log(data.data);
     // console.log(eventDates);
     // let test = jq(`.tile`).length;
     // console.log(test);
     //onclick show box position absolute
     // export let form;
     // console.log(jq('.tile'));
-    console.log(data.data);
 </script>
 
 <main>
 <div class="calendar">
+    <!-- paradit 1 tile bet taja box paradit info par visiem notikumiem -->
     {#each Array(daysInCurrentMonth) as _, i}
-    <!-- <p>{data.data}</p> -->
-
-            <!-- {#if new Date(event['startDate']).getDate() == i+1} -->
             {#if eventDates.includes(i+1)}
-                <!-- <div class="tile" id="{i+1}" style="background-color: {event['color']};">{i + 1} <a href="/events/{event['id']}">{event['eventName']}</a></div> -->
                 {#each data.data as event, index}
-                <!-- {index} -->
-
-                {#if new Date(event['startDate']).getDate() == i+1 }
-                    <!-- {#if }
-                        
-                    {/if} -->
-                    <div class="tile" id="box-{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>{i + 1} <p>{event['eventName']}</p>
-                    </div>
-
-                    <div id="hidden" class="popup{i+1} box">
-                        <button on:click={() => showPopup(i+1)}>X</button>
-                        <div class="cen col">
-                            <p class="box-data">{event['eventName']}</p>
-                            <p class="box-data">{new Date(event['startDate']).getDate()}-{new Date(event['startDate']).getMonth()}-{new Date(event['startDate']).getFullYear()}</p>
-                            <p class="box-data">{event['startTime']}</p>
-                            <p class="box-data">{event['eventDescription']}</p>
-                            <p>Kontakti:</p>
-                            <p class="box-data">{event['contactPhone']}</p>
-                            <p class="box-data">{event['contactEmail']}</p>
+                    {#if new Date(event['startDate']).getDate() == i+1 && event['eventCount'] > 1 }
+                        <div class="tile" id="box-{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>{i + 1} <p>{event['eventName']} <b>+{event['eventCount']-1}</b></p>
                         </div>
-                    </div>
-                {/if}
-                {/each}
-            {:else}
+                        <!-- popup -->
+                        <div id="hidden" class="popup{i+1} box">
+                            <button on:click={() => showPopup(i+1)}>X</button>
+                            <div class="cen col">
+                                <p class="box-data">{event['eventName']}</p>
+                                <p class="box-data">Datums: {new Date(event['startDate']).getDate()}/{new Date(event['startDate']).getMonth()}/{new Date(event['startDate']).getFullYear()}</p>
+                                <p class="box-data">Laiks: {event['startTime']}</p>
+                                <p class="box-data">{event['eventDescription']}</p>
+                                <p>Kontakti:</p>
+                                <p class="box-data">{event['contactPhone']}</p>
+                                <p class="box-data">{event['contactEmail']}</p>
+                            </div>
+                            {#each filteredDates as filtered}
+                                {#if new Date(filtered['startDate']).getDate() == new Date(event['startDate']).getDate()}
+                                    <div class="cen col">
+                                        <p class="box-data">{filtered['eventName']}</p>
+                                        <p class="box-data">Datums: {new Date(filtered['startDate']).getDate()}/{new Date(filtered['startDate']).getMonth()}/{new Date(filtered['startDate']).getFullYear()}</p>
+                                        <p class="box-data">Laiks: {filtered['startTime']}</p>
+                                        <p class="box-data">{filtered['eventDescription']}</p>
+                                        <p>Kontakti:</p>
+                                        <p class="box-data">{filtered['contactPhone']}</p>
+                                        <p class="box-data">{filtered['contactEmail']}</p>
+                                    </div>
+                                {/if}
+                            {/each}
+                        </div>
+                        
+                    {:else if new Date(event['startDate']).getDate() == i+1}
+                        <div class="tile" id="box-{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>{i + 1} <p>{event['eventName']}</p>
+                        </div>
+                        <!-- popup -->
+                        <div id="hidden" class="popup{i+1} box">
+                            <button on:click={() => showPopup(i+1)}>X</button>
+                            <div class="cen col">
+                                <p class="box-data">{event['eventName']}</p>
+                                <p class="box-data">Datums: {new Date(event['startDate']).getDate()}/{new Date(event['startDate']).getMonth()}/{new Date(event['startDate']).getFullYear()}</p>
+                                <p class="box-data">Laiks: {event['startTime']}</p>
+                                <p class="box-data">{event['eventDescription']}</p>
+                                <p>Kontakti:</p>
+                                <p class="box-data">{event['contactPhone']}</p>
+                                <p class="box-data">{event['contactEmail']}</p>
+                            </div>
+                        </div>
+                    {/if}
+                    {/each}
+                    {:else}
                 <div class="tile" id="box-{i+1}">{i + 1}</div>
             {/if}
     {/each}
 </div>
-
-<!-- {#each data.data as event}
-<a href="/events/{event['id']}">
-    <article style="border: 10px solid {event['color']}; border-radius:0.2rem; background-image: url('src/lib/images/{event['bgImage']}'); background-size: cover; background-repeat: no-repeat; width: 35rem; height: 25rem;">
-        <img class="logo" src="/src/lib/images/{event['logo']}" alt="">
-        <div style="background-color: {event['color']}; position: relative; bottom: 0px;">
-            <h3>{event['eventName']}</h3>
-            <p>{event['eventDescription']}</p>
-            <div class="row">
-                <p>{event['contactPhone']}</p>
-                <p>{event['contactEmail']}</p>
-            </div>
-        </div>
-    </article>
-</a>
-{/each} -->
 </main>
 
 <style>

@@ -8,15 +8,16 @@
 		"preview": "vite preview"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/kit": "^1.27.4",
+		"@sveltejs/adapter-auto": "^2.1.1",
+		"@sveltejs/kit": "^1.30.3",
 		"@types/jquery": "^3.5.29",
-		"svelte": "^4.0.5",
-		"vite": "^4.4.2"
+		"svelte": "^4.2.8",
+		"vite": "^4.5.1"
 	},
 	"type": "module",
 	"dependencies": {
 		"jquery": "^3.7.1",
+		"jsdom": "^23.0.1",
 		"jsonwebtoken": "^9.0.2",
 		"mysql2": "^3.6.5",
 		"sha.js": "^2.4.11"
