@@ -48,23 +48,26 @@
     // export let form;
     // console.log(jq('.tile'));
 </script>
-
+<!-- {#each filteredDates as event (event.id)}
+<div class="tile" id="box-{event.id}" style="background-color: {event.color};" on:click={() => showPopup(event.id)}>
+    <div>{event.id} <p>{event.eventName}</p></div>
+    <div><p>{event.eventName}</p></div>
+</div>
+{/each} -->
 <main>
 <div class="calendar">
     <!-- paradit 1 tile bet taja box paradit info par visiem notikumiem -->
     {#each Array(daysInCurrentMonth) as _, i}
             {#if eventDates.includes(i+1)}
                 {#each data.data as event, index}
-                    {#if new Date(event['startDate']).getDate() == i+1 && event['eventCount'] > 1 }
+                    {#if new Date(event.startDate).getDate() == i+1 && event.eventCount > 1 }
                         <!-- Ja ir vairaki eventi paradit vinus ka child elemetus -->
-                        <div class="tile" id="box-{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>
+                        <div class="tile" id="box-{i+1} {index}" style="background-color: {event.color};" on:click={() => showPopup(i+1)}>
                             <!-- <div>{i + 1} <p>{event['eventName']} <b>+{event['eventCount']-1}</b></p></div> -->
-                            <div>{i + 1} <p>{event['eventName']}</p></div>
-                            {#each filteredDates as date}
-                            <div><p>{date.eventName}</p></div>
-                            <!-- <div><p>{console.log(date.eventName)}</p></div> -->
+                            <div id="{index}">{i + 1} <p>{event.eventName}</p></div>
+                            {#each filteredDates as date, index}
+                                <div id="{index}"><p>{date.eventName}</p></div>
                             {/each}
-
                         </div>
                         <!-- popup -->
                         <div id="hidden" class="popup{i+1} box">
@@ -112,7 +115,7 @@
                             </div>
                         </div>
                     {/if}
-                    {/each}
+                {/each}
                     {:else}
                 <!-- ja nav eventu -->
                 <div class="tile" id="box-{i+1}">{i + 1}</div>
