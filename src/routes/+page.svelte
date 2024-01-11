@@ -56,7 +56,15 @@
             {#if eventDates.includes(i+1)}
                 {#each data.data as event, index}
                     {#if new Date(event['startDate']).getDate() == i+1 && event['eventCount'] > 1 }
-                        <div class="tile" id="box-{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>{i + 1} <p>{event['eventName']} <b>+{event['eventCount']-1}</b></p>
+                        <!-- Ja ir vairaki eventi paradit vinus ka child elemetus -->
+                        <div class="tile" id="box-{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>
+                            <!-- <div>{i + 1} <p>{event['eventName']} <b>+{event['eventCount']-1}</b></p></div> -->
+                            <div>{i + 1} <p>{event['eventName']}</p></div>
+                            {#each filteredDates as date}
+                            <div><p>{date.eventName}</p></div>
+                            <!-- <div><p>{console.log(date.eventName)}</p></div> -->
+                            {/each}
+
                         </div>
                         <!-- popup -->
                         <div id="hidden" class="popup{i+1} box">
@@ -70,8 +78,10 @@
                                 <p class="box-data">{event['contactPhone']}</p>
                                 <p class="box-data">{event['contactEmail']}</p>
                             </div>
-                            {#each filteredDates as filtered}
+                            <!-- {#each filteredDates as filtered}
                                 {#if new Date(filtered['startDate']).getDate() == new Date(event['startDate']).getDate()}
+                                {console.log(filtered)}
+                                    {filtered}
                                     <div class="cen col">
                                         <p class="box-data">{filtered['eventName']}</p>
                                         <p class="box-data">Datums: {new Date(filtered['startDate']).getDate()}/{new Date(filtered['startDate']).getMonth()}/{new Date(filtered['startDate']).getFullYear()}</p>
@@ -82,9 +92,9 @@
                                         <p class="box-data">{filtered['contactEmail']}</p>
                                     </div>
                                 {/if}
-                            {/each}
+                            {/each} -->
                         </div>
-                        
+                    <!-- ja ir tikai 1 events -->
                     {:else if new Date(event['startDate']).getDate() == i+1}
                         <div class="tile" id="box-{i+1}" style="background-color: {event['color']};" on:click={() => showPopup(i+1)}>{i + 1} <p>{event['eventName']}</p>
                         </div>
@@ -104,6 +114,7 @@
                     {/if}
                     {/each}
                     {:else}
+                <!-- ja nav eventu -->
                 <div class="tile" id="box-{i+1}">{i + 1}</div>
             {/if}
     {/each}
